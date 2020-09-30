@@ -1,33 +1,44 @@
 {
-  "name": "spryker/spryker",
-  "description": "Spryker Framework",
+  "name": "spryker/price-cart-connector",
+  "type": "library",
+  "description": "PriceCartConnector module",
   "license": "proprietary",
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.1",
+    "spryker/cart-extension": "^2.0.0 || ^4.0.0",
+    "spryker/kernel": "^3.0.0",
+    "spryker/messenger": "^3.0.0",
+    "spryker/price": "^5.0.0",
+    "spryker/price-product": "^1.3.0 || ^2.3.0"
   },
   "require-dev": {
-    "spryker/code-sniffer": "dev-master"
+    "spryker/calculation": "*",
+    "spryker/cart": "*",
+    "spryker/product": "*",
+    "spryker/propel": "*",
+    "spryker/testify": "*"
+  },
+  "suggest": {
+    "spryker/cart": "If you want to use Cart plugins."
+  },
+  "autoload": {
+    "psr-4": {
+      "Spryker\\": "src/Spryker/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SprykerTest\\": "tests/SprykerTest/"
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "3.0.x-dev"
+    }
+  },
   "config": {
-    "use-include-path": true,
-    "process-timeout": 1200
-  },
-  "autoload": {
-    "files": [
-      "autoload.php"
-    ]
-  },
-  "bin": [
-    "Bundles/Console/bin/console",
-    "Bundles/Console/bin/yves",
-    "Bundles/Console/bin/glue"
-  ],
-  "scripts": {
-    "cs-check": "phpcs --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml -p --ignore=/node_modules/ Bundles/"
-  },
-  "replace": {
-    "spryker/discount": "6.4.0"
+    "sort-packages": true
   }
 }
