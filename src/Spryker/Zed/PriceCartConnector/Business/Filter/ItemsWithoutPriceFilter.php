@@ -230,7 +230,7 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
      */
     protected function isPriceProductDimensionEnabled(PriceProductFilterTransfer $priceProductFilterTransfer): bool
     {
-        return property_exists($priceProductFilterTransfer, 'quote');
+        return property_exists($priceProductFilterTransfer, 'quote'); // @phpstan-ignore function.alreadyNarrowedType
     }
 
     /**

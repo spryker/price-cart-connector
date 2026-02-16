@@ -84,7 +84,7 @@ class PriceCartConnectorToPriceProductAdapter implements PriceCartToPriceProduct
      */
     public function getValidPrices(array $priceProductFilterTransfers): array
     {
-        if (!method_exists($this->priceProductFacade, 'getValidPrices')) {
+        if (!method_exists($this->priceProductFacade, 'getValidPrices')) { // @phpstan-ignore function.alreadyNarrowedType
             return $this->findPriceProductsForPriceProductFilterTransfers($priceProductFilterTransfers);
         }
 

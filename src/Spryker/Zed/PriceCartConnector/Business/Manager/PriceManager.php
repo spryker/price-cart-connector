@@ -58,7 +58,7 @@ class PriceManager implements PriceManagerInterface
     protected PriceCartConnectorToPriceProductServiceInterface $priceProductService;
 
     /**
-     * @var list<\Spryker\Zed\PriceCartConnectorExtension\Dependency\Plugin\PriceProductExpanderPluginInterface>
+     * @var array<\Spryker\Zed\PriceCartConnectorExtension\Dependency\Plugin\PriceProductExpanderPluginInterface>
      */
     protected array $priceProductExpanderPlugins;
 
@@ -363,7 +363,7 @@ class PriceManager implements PriceManagerInterface
 
     /**
      * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     * @param list<\Generated\Shared\Transfer\PriceProductTransfer> $priceProductTransfers
+     * @param array<\Generated\Shared\Transfer\PriceProductTransfer> $priceProductTransfers
      * @param array<string, \Generated\Shared\Transfer\PriceProductFilterTransfer> $priceProductFilterTransfers
      * @param bool|null $ignorePriceMissingException
      *
