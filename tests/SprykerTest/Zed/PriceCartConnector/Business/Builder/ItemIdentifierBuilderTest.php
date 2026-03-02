@@ -74,9 +74,6 @@ class ItemIdentifierBuilderTest extends Unit
         $this->assertSame($expectedResult, $itemIdentifier === $secondItemTransfer);
     }
 
-    /**
-     * @return void
-     */
     public function testGetItemFieldsForIdentifierShouldReturnEmptyIdentifierWhenFieldsAreNotSet(): void
     {
         // Arrange
@@ -91,9 +88,6 @@ class ItemIdentifierBuilderTest extends Unit
         $this->assertEmpty($itemIdentifier);
     }
 
-    /**
-     * @return void
-     */
     public function testGetItemFieldsForIdentifierShouldThrowExceptionWhenTransferPropertyNotFound(): void
     {
         // Assert

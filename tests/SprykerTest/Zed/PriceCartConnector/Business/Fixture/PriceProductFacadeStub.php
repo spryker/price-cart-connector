@@ -56,11 +56,6 @@ class PriceProductFacadeStub extends PriceProductFacade implements PriceCartToPr
         return $this->prices[$priceFilterTransfer->getSku()];
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductTransfer|null
-     */
     public function findPriceProductFor(PriceProductFilterTransfer $priceFilterTransfer): ?PriceProductTransfer
     {
         $price = $this->findPriceFor($priceFilterTransfer);
@@ -97,31 +92,16 @@ class PriceProductFacadeStub extends PriceProductFacade implements PriceCartToPr
         return $this->validities[$sku];
     }
 
-    /**
-     * @param string $sku
-     * @param int $price
-     *
-     * @return void
-     */
     public function addPriceStub(string $sku, int $price): void
     {
         $this->prices[$sku] = $price;
     }
 
-    /**
-     * @param string $sku
-     * @param bool $validity
-     *
-     * @return void
-     */
     public function addValidityStub(string $sku, bool $validity = true): void
     {
         $this->validities[$sku] = $validity;
     }
 
-    /**
-     * @return string
-     */
     public function getDefaultPriceTypeName(): string
     {
         return 'DEFAULT';

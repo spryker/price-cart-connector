@@ -89,12 +89,6 @@ class PriceCartConnectorBusinessTester extends Actor
      */
     protected const TEST_ITEM_ID = 123;
 
-    /**
-     * @param array $itemsData
-     * @param \Generated\Shared\Transfer\CurrencyTransfer $currencyTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
     public function createQuoteWithItems(array $itemsData, CurrencyTransfer $currencyTransfer): QuoteTransfer
     {
         $storeTransfer = $this->haveStore([StoreTransfer::NAME => static::STORE_DE]);
@@ -172,9 +166,6 @@ class PriceCartConnectorBusinessTester extends Actor
         return $priceCartConnectorFacade;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CartChangeTransfer
-     */
     public function createCartChangeTransferWithItem(): CartChangeTransfer
     {
         $currencyTransfer = (new CurrencyTransfer())->setCode(static::TEST_CURRENCY_1);
@@ -194,9 +185,6 @@ class PriceCartConnectorBusinessTester extends Actor
             ->addItem($itemTransfer);
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceProductInterface
-     */
     public function createPriceProductFacadeStub(): PriceCartToPriceProductInterface
     {
         return new PriceProductFacadeStub();
@@ -214,9 +202,6 @@ class PriceCartConnectorBusinessTester extends Actor
         }, $cartPreCheckResponseTransfer->getMessages()->getArrayCopy());
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToUtilEncodingServiceInterface
-     */
     public function createPriceCartConnectorToUtilEncodingServiceBridge(): PriceCartConnectorToUtilEncodingServiceInterface
     {
         return new PriceCartConnectorToUtilEncodingServiceBridge(
@@ -224,9 +209,6 @@ class PriceCartConnectorBusinessTester extends Actor
         );
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToUtilTextServiceInterface
-     */
     public function createPriceCartConnectorToUtilTextServiceBridge(): PriceCartConnectorToUtilTextServiceInterface
     {
         return new PriceCartConnectorToUtilTextServiceBridge(
@@ -234,11 +216,6 @@ class PriceCartConnectorBusinessTester extends Actor
         );
     }
 
-    /**
-     * @param \Spryker\Zed\PriceCartConnector\PriceCartConnectorConfig $priceCartConnectorConfig
-     *
-     * @return \Spryker\Zed\PriceCartConnector\Business\Builder\ItemIdentifierBuilderInterface
-     */
     public function createItemIdentifierBuilder(PriceCartConnectorConfig $priceCartConnectorConfig): ItemIdentifierBuilderInterface
     {
         return new ItemIdentifierBuilder(
@@ -265,9 +242,6 @@ class PriceCartConnectorBusinessTester extends Actor
         ]);
     }
 
-    /**
-     * @return \Spryker\Zed\Kernel\Container
-     */
     protected function createContainer(): Container
     {
         return new Container();
@@ -314,17 +288,11 @@ class PriceCartConnectorBusinessTester extends Actor
         return $container;
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\PriceCartConnectorBusinessFactory
-     */
     public function createPriceCartConnectorBusinessFactory(): PriceCartConnectorBusinessFactory
     {
         return new PriceCartConnectorBusinessFactory();
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\PriceCartConnectorFacadeInterface
-     */
     protected function createPriceCartConnectorFacade(): PriceCartConnectorFacadeInterface
     {
         return new PriceCartConnectorFacade();

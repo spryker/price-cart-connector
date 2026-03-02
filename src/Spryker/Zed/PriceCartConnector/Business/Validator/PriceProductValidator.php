@@ -52,12 +52,6 @@ class PriceProductValidator implements PriceProductValidatorInterface
      */
     protected ItemIdentifierBuilderInterface $itemIdentifierBuilder;
 
-    /**
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceProductInterface $priceProductFacade
-     * @param \Spryker\Zed\PriceCartConnector\Business\Filter\PriceProductFilterInterface $priceProductFilter
-     * @param \Spryker\Zed\PriceCartConnector\PriceCartConnectorConfig $priceCartConnectorConfig
-     * @param \Spryker\Zed\PriceCartConnector\Business\Builder\ItemIdentifierBuilderInterface $itemIdentifierBuilder
-     */
     public function __construct(
         PriceCartToPriceProductInterface $priceProductFacade,
         PriceProductFilterInterface $priceProductFilter,
@@ -70,11 +64,6 @@ class PriceProductValidator implements PriceProductValidatorInterface
         $this->itemIdentifierBuilder = $itemIdentifierBuilder;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     *
-     * @return \Generated\Shared\Transfer\CartPreCheckResponseTransfer
-     */
     public function validatePrices(CartChangeTransfer $cartChangeTransfer): CartPreCheckResponseTransfer
     {
         $cartPreCheckResponseTransfer = (new CartPreCheckResponseTransfer())->setIsSuccess(true);
@@ -115,12 +104,6 @@ class PriceProductValidator implements PriceProductValidatorInterface
         return $validPriceProductTransfers;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\MoneyValueTransfer $moneyValueTransfer
-     * @param string $priceMode
-     *
-     * @return int|null
-     */
     protected function getPriceValueByPriceMode(MoneyValueTransfer $moneyValueTransfer, string $priceMode): ?int
     {
         if ($priceMode === static::PRICE_MODE_GROSS) {
@@ -179,11 +162,6 @@ class PriceProductValidator implements PriceProductValidatorInterface
         return array_shift($productWithoutPriceSkus);
     }
 
-    /**
-     * @param string $sku
-     *
-     * @return \Generated\Shared\Transfer\MessageTransfer
-     */
     protected function createMessage(string $sku): MessageTransfer
     {
         return (new MessageTransfer())

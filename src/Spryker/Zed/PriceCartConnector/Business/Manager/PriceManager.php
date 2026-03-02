@@ -199,13 +199,6 @@ class PriceManager implements PriceManagerInterface
         return $priceProductFilterTransfers;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\PriceProductTransfer $priceProductTransfer
-     * @param string $priceMode
-     *
-     * @return \Generated\Shared\Transfer\ItemTransfer
-     */
     protected function setOriginUnitPrices(
         ItemTransfer $itemTransfer,
         PriceProductTransfer $priceProductTransfer,
@@ -219,12 +212,6 @@ class PriceManager implements PriceManagerInterface
         return $this->setOriginUnitGrossPrice($itemTransfer, $priceProductTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\PriceProductTransfer $priceProductTransfer
-     *
-     * @return \Generated\Shared\Transfer\ItemTransfer
-     */
     protected function setOriginUnitGrossPrice(
         ItemTransfer $itemTransfer,
         PriceProductTransfer $priceProductTransfer
@@ -236,12 +223,6 @@ class PriceManager implements PriceManagerInterface
         return $itemTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\PriceProductTransfer $priceProductTransfer
-     *
-     * @return \Generated\Shared\Transfer\ItemTransfer
-     */
     protected function setOriginUnitNetPrice(
         ItemTransfer $itemTransfer,
         PriceProductTransfer $priceProductTransfer
@@ -253,9 +234,6 @@ class PriceManager implements PriceManagerInterface
         return $itemTransfer;
     }
 
-    /**
-     * @return string
-     */
     protected function getNetPriceModeIdentifier(): string
     {
         if (!static::$netPriceModeIdentifier) {
@@ -392,12 +370,6 @@ class PriceManager implements PriceManagerInterface
         return $priceProductTransfersIndexedByItemIdentifier;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param string $fallbackIdentifier
-     *
-     * @return string
-     */
     protected function getItemIdentifier(ItemTransfer $itemTransfer, string $fallbackIdentifier): string
     {
         return $this->itemIdentifierBuilder->buildItemIdentifier($itemTransfer) ?: $fallbackIdentifier;

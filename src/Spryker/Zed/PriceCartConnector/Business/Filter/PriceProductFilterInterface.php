@@ -13,12 +13,6 @@ use Generated\Shared\Transfer\PriceProductFilterTransfer;
 
 interface PriceProductFilterInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductFilterTransfer
-     */
     public function createPriceProductFilterTransfer(
         CartChangeTransfer $cartChangeTransfer,
         ItemTransfer $itemTransfer

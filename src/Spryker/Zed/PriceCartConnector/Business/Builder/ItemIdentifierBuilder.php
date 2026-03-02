@@ -37,11 +37,6 @@ class ItemIdentifierBuilder implements ItemIdentifierBuilderInterface
      */
     protected PriceCartConnectorToUtilTextServiceInterface $utilTextService;
 
-    /**
-     * @param \Spryker\Zed\PriceCartConnector\PriceCartConnectorConfig $priceCartConnectorConfig
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToUtilEncodingServiceInterface $utilEncodingService
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToUtilTextServiceInterface $utilTextService
-     */
     public function __construct(
         PriceCartConnectorConfig $priceCartConnectorConfig,
         PriceCartConnectorToUtilEncodingServiceInterface $utilEncodingService,
@@ -52,11 +47,6 @@ class ItemIdentifierBuilder implements ItemIdentifierBuilderInterface
         $this->utilTextService = $utilTextService;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return string
-     */
     public function buildItemIdentifier(ItemTransfer $itemTransfer): string
     {
         $itemFieldsForIdentifier = $this->getItemFieldsForIdentifier($itemTransfer);

@@ -258,9 +258,6 @@ class PriceCartConnectorFacadeTest extends Unit
         ];
     }
 
-    /**
-     * @return array
-     */
     protected function getValidatePricesDataProvider(): array
     {
         return [
@@ -353,9 +350,6 @@ class PriceCartConnectorFacadeTest extends Unit
         return $priceCartConnectorFacade;
     }
 
-    /**
-     * @return void
-     */
     protected function resetCachedEntities(): void
     {
         $priceProductConcreteReaderReflection = new ReflectionClass("\Spryker\Zed\PriceProduct\Business\Model\Product\PriceProductConcreteReader");

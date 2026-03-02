@@ -80,12 +80,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         $this->itemComparator = $itemComparator;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductFilterTransfer
-     */
     public function createPriceProductFilterTransfer(
         CartChangeTransfer $cartChangeTransfer,
         ItemTransfer $itemTransfer
@@ -107,11 +101,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         return $priceProductFilterTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return string
-     */
     protected function getPriceMode(QuoteTransfer $quoteTransfer): string
     {
         if ($quoteTransfer->getPriceMode() === null) {
@@ -125,11 +114,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         return $quoteTransfer->getPriceMode();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return string
-     */
     protected function getCurrencyCode(QuoteTransfer $quoteTransfer): string
     {
         if ($quoteTransfer->getCurrency() === null || $quoteTransfer->getCurrency()->getCode() === null) {
@@ -143,11 +127,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         return $quoteTransfer->getCurrency()->getCode();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return string|null
-     */
     protected function findStoreName(QuoteTransfer $quoteTransfer): ?string
     {
         if ($quoteTransfer->getStore() === null) {
@@ -157,23 +136,11 @@ class PriceProductFilter implements PriceProductFilterInterface
         return $quoteTransfer->getStore()->getName();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceProductFilterTransfer
-     *
-     * @return bool
-     */
     protected function isPriceProductDimensionEnabled(PriceProductFilterTransfer $priceProductFilterTransfer): bool
     {
         return property_exists($priceProductFilterTransfer, 'quote'); // @phpstan-ignore function.alreadyNarrowedType
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceProductFilterTransfer
-     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductFilterTransfer
-     */
     protected function mapItemTransferToPriceProductFilterTransfer(
         PriceProductFilterTransfer $priceProductFilterTransfer,
         CartChangeTransfer $cartChangeTransfer,
@@ -186,12 +153,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         return $priceProductFilterTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     *
-     * @return int
-     */
     protected function getItemTotalQuantity(ItemTransfer $itemTransfer, CartChangeTransfer $cartChangeTransfer): int
     {
         $quantity = $this->executeCartItemQuantityCounterStrategyPlugins($itemTransfer, $cartChangeTransfer);
@@ -220,12 +181,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         return $quantity;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\CartChangeTransfer $cartChangeTransfer
-     *
-     * @return int|null
-     */
     protected function executeCartItemQuantityCounterStrategyPlugins(
         ItemTransfer $itemTransfer,
         CartChangeTransfer $cartChangeTransfer
@@ -240,13 +195,6 @@ class PriceProductFilter implements PriceProductFilterInterface
         return null;
     }
 
-    /**
-     * @param int $currentItemQuantity
-     * @param int|null $deltaQuantity
-     * @param string|null $operation
-     *
-     * @return int
-     */
     protected function changeItemQuantityAccordingToOperation(int $currentItemQuantity, ?int $deltaQuantity, ?string $operation): int
     {
         if ($operation === PriceCartConnectorConfig::OPERATION_REMOVE) {

@@ -33,11 +33,6 @@ interface PriceCartToPriceProductInterface
      */
     public function getDefaultPriceTypeName();
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductTransfer|null
-     */
     public function findPriceProductFor(PriceProductFilterTransfer $priceFilterTransfer): ?PriceProductTransfer;
 
     /**

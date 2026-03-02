@@ -45,9 +45,6 @@ class PriceProductFilterTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @return void
-     */
     public function testOnlyMergeItemsWithAllMatchingFields(): void
     {
         // Arrange
@@ -142,25 +139,16 @@ class PriceProductFilterTest extends Unit
         );
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceProductInterface
-     */
     protected function createPriceProductFacadeMock(): PriceCartToPriceProductInterface
     {
         return $this->getMockBuilder(PriceCartToPriceProductInterface::class)->getMock();
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceInterface
-     */
     protected function createPriceFacadeMock(): PriceCartToPriceInterface
     {
         return $this->getMockBuilder(PriceCartToPriceInterface::class)->getMock();
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartConnectorToCurrencyFacadeInterface
-     */
     protected function createCurrencyFacadeMock(): PriceCartConnectorToCurrencyFacadeInterface
     {
         return $this->getMockBuilder(PriceCartConnectorToCurrencyFacadeInterface::class)->getMock();

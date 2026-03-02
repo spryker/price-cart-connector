@@ -31,9 +31,6 @@ class SourcePriceSanitizerTest extends Unit
      */
     protected $sourcePriceSanitizerMock;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -41,9 +38,6 @@ class SourcePriceSanitizerTest extends Unit
         $this->sourcePriceSanitizerMock = $this->createSourcePriceSanitizerMock();
     }
 
-    /**
-     * @return void
-     */
     public function testSanitizeSourcePricesCleanUpSourcePricesInQuote(): void
     {
         // Arrange

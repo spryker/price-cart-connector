@@ -274,9 +274,6 @@ class PriceManagerTest extends Unit
         return $this->getMockBuilder(PriceCartConnectorToCurrencyFacadeInterface::class)->getMock();
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\Filter\Comparator\ItemComparatorInterface
-     */
     protected function createItemComparator(): ItemComparatorInterface
     {
         return new ItemComparator($this->tester->createPriceCartConnectorConfigMock());
@@ -317,17 +314,11 @@ class PriceManagerTest extends Unit
         );
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToPriceProductServiceInterface
-     */
     protected function createPriceCartConnectorToPriceProductServiceBridge(): PriceCartConnectorToPriceProductServiceInterface
     {
         return new PriceCartConnectorToPriceProductServiceBridge($this->tester->getLocator()->priceProduct()->service());
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CartChangeTransfer
-     */
     protected function createCartChangeTransfer(): CartChangeTransfer
     {
         $itemCollection = new CartChangeTransfer();
@@ -348,9 +339,6 @@ class PriceManagerTest extends Unit
         return $itemCollection;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\CartChangeTransfer
-     */
     protected function createCartChangeTransferWithItem(): CartChangeTransfer
     {
         return $this->createCartChangeTransfer()

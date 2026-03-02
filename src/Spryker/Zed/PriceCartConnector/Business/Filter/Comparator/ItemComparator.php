@@ -18,9 +18,6 @@ class ItemComparator implements ItemComparatorInterface
      */
     protected $priceCartConnectorConfig;
 
-    /**
-     * @param \Spryker\Zed\PriceCartConnector\PriceCartConnectorConfig $priceCartConnectorConfig
-     */
     public function __construct(PriceCartConnectorConfig $priceCartConnectorConfig)
     {
         $this->priceCartConnectorConfig = $priceCartConnectorConfig;

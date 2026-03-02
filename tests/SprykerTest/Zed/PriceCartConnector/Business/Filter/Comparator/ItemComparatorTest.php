@@ -33,9 +33,6 @@ class ItemComparatorTest extends Unit
      */
     protected $tester;
 
-    /**
-     * @return void
-     */
     public function testItemsWithAllSameConfiguredFieldValuesAreSame(): void
     {
         // Arrange
@@ -65,9 +62,6 @@ class ItemComparatorTest extends Unit
         );
     }
 
-    /**
-     * @return void
-     */
     public function testItemsWithOnlySameSkuAreNotSame(): void
     {
         // Arrange

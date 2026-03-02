@@ -16,9 +16,6 @@ class PriceItemFixture extends CartItemFixture
      */
     protected $price = 0;
 
-    /**
-     * @return int
-     */
     public function getGrossPrice(): int
     {
         return $this->price;

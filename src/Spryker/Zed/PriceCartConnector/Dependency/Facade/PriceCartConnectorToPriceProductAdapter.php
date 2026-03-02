@@ -47,11 +47,6 @@ class PriceCartConnectorToPriceProductAdapter implements PriceCartToPriceProduct
         return $this->priceProductFacade->findPriceBySku($sku, $priceType);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceFilterTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductTransfer|null
-     */
     public function findPriceProductFor(PriceProductFilterTransfer $priceFilterTransfer): ?PriceProductTransfer
     {
         return $this->priceProductFacade->findPriceProductFor($priceFilterTransfer);

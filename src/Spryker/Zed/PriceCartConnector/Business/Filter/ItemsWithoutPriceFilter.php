@@ -55,13 +55,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
      */
     protected ItemIdentifierBuilderInterface $itemIdentifierBuilder;
 
-    /**
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceInterface $priceFacade
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceProductInterface $priceProductFacade
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToMessengerInterface $messengerFacade
-     * @param \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToPriceProductServiceInterface $priceProductService
-     * @param \Spryker\Zed\PriceCartConnector\Business\Builder\ItemIdentifierBuilderInterface $itemIdentifierBuilder
-     */
     public function __construct(
         PriceCartToPriceInterface $priceFacade,
         PriceCartToPriceProductInterface $priceProductFacade,
@@ -76,11 +69,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         $this->itemIdentifierBuilder = $itemIdentifierBuilder;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
     public function filterItems(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         $priceProductFilters = $this->createPriceProductFilters($quoteTransfer);
@@ -133,12 +121,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         return null;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductFilterTransfer
-     */
     protected function createPriceProductFilter(
         ItemTransfer $itemTransfer,
         QuoteTransfer $quoteTransfer
@@ -164,11 +146,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         return $priceProductFilterTransfer;
     }
 
-    /**
-     * @param string $sku
-     *
-     * @return void
-     */
     protected function addFilterMessage(string $sku): void
     {
         $messageTransfer = new MessageTransfer();
@@ -180,12 +157,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         $this->messengerFacade->addInfoMessage($messageTransfer);
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceProductFilterTransfer
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return \Generated\Shared\Transfer\PriceProductFilterTransfer
-     */
     protected function mapItemTransferToPriceProductFilterTransfer(
         PriceProductFilterTransfer $priceProductFilterTransfer,
         ItemTransfer $itemTransfer
@@ -195,11 +166,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         return $priceProductFilterTransfer;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return string
-     */
     protected function getPriceMode(QuoteTransfer $quoteTransfer): string
     {
         if (!$quoteTransfer->getPriceMode()) {
@@ -209,11 +175,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         return $quoteTransfer->getPriceMode();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return string|null
-     */
     protected function findStoreName(QuoteTransfer $quoteTransfer): ?string
     {
         if ($quoteTransfer->getStore() === null) {
@@ -223,11 +184,6 @@ class ItemsWithoutPriceFilter implements ItemFilterInterface
         return $quoteTransfer->getStore()->getName();
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\PriceProductFilterTransfer $priceProductFilterTransfer
-     *
-     * @return bool
-     */
     protected function isPriceProductDimensionEnabled(PriceProductFilterTransfer $priceProductFilterTransfer): bool
     {
         return property_exists($priceProductFilterTransfer, 'quote'); // @phpstan-ignore function.alreadyNarrowedType

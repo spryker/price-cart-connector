@@ -61,9 +61,6 @@ class PriceCartConnectorBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\Filter\PriceProductFilterInterface
-     */
     public function createPriceProductFilter(): PriceProductFilterInterface
     {
         return new PriceProductFilter(
@@ -75,9 +72,6 @@ class PriceCartConnectorBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\Filter\ItemFilterInterface
-     */
     public function createItemsWithoutPriceFilter(): ItemFilterInterface
     {
         return new ItemsWithoutPriceFilter(
@@ -89,25 +83,16 @@ class PriceCartConnectorBusinessFactory extends AbstractBusinessFactory
         );
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\Sanitizer\SourcePriceSanitizerInterface
-     */
     public function createSourcePriceSanitizer(): SourcePriceSanitizerInterface
     {
         return new SourcePriceSanitizer();
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\Filter\Comparator\ItemComparatorInterface
-     */
     public function createItemComparator(): ItemComparatorInterface
     {
         return new ItemComparator($this->getConfig());
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Business\Builder\ItemIdentifierBuilderInterface
-     */
     public function createItemIdentifierBuilder(): ItemIdentifierBuilderInterface
     {
         return new ItemIdentifierBuilder(
@@ -133,25 +118,16 @@ class PriceCartConnectorBusinessFactory extends AbstractBusinessFactory
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::FACADE_PRICE);
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToMessengerInterface
-     */
     public function getMessengerFacade(): PriceCartToMessengerInterface
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::FACADE_MESSENGER);
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartConnectorToCurrencyFacadeInterface
-     */
     public function getCurrencyFacade(): PriceCartConnectorToCurrencyFacadeInterface
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::FACADE_CURRENCY);
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToPriceProductServiceInterface
-     */
     public function getPriceProductService(): PriceCartConnectorToPriceProductServiceInterface
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::SERVICE_PRICE_PRODUCT);
@@ -173,17 +149,11 @@ class PriceCartConnectorBusinessFactory extends AbstractBusinessFactory
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::PLUGINS_CART_ITEM_QUANTITY_COUNTER_STRATEGY);
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToUtilEncodingServiceInterface
-     */
     public function getUtilEncodingService(): PriceCartConnectorToUtilEncodingServiceInterface
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::SERVICE_UTIL_ENCODING);
     }
 
-    /**
-     * @return \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToUtilTextServiceInterface
-     */
     public function getUtilTextService(): PriceCartConnectorToUtilTextServiceInterface
     {
         return $this->getProvidedDependency(PriceCartConnectorDependencyProvider::SERVICE_UTIL_TEXT);
