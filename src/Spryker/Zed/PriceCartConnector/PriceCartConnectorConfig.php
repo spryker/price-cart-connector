@@ -13,6 +13,8 @@ use Spryker\Zed\Kernel\AbstractBundleConfig;
 class PriceCartConnectorConfig extends AbstractBundleConfig
 {
     /**
+     * @api
+     *
      * @uses \Spryker\Zed\Cart\CartConfig::OPERATION_REMOVE
      *
      * @var string
