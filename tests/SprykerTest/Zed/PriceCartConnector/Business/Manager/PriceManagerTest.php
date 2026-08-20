@@ -311,6 +311,7 @@ class PriceManagerTest extends Unit
             $this->tester->createItemIdentifierBuilder(
                 $this->tester->createPriceCartConnectorConfigMock($itemFieldsForIdentifier),
             ),
+            $this->createItemComparator(),
         );
     }
 

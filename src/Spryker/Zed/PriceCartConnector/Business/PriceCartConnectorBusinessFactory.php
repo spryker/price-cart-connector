@@ -45,6 +45,7 @@ class PriceCartConnectorBusinessFactory extends AbstractBusinessFactory
             $this->getPriceProductService(),
             $this->getPriceProductExpanderPlugins(),
             $this->createItemIdentifierBuilder(),
+            $this->createItemComparator(),
         );
     }
 

@@ -15,6 +15,7 @@ use Generated\Shared\Transfer\PriceProductTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\PriceCartConnector\Business\Builder\ItemIdentifierBuilderInterface;
 use Spryker\Zed\PriceCartConnector\Business\Exception\PriceMissingException;
+use Spryker\Zed\PriceCartConnector\Business\Filter\Comparator\ItemComparatorInterface;
 use Spryker\Zed\PriceCartConnector\Business\Filter\PriceProductFilterInterface;
 use Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceInterface;
 use Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceProductInterface;
@@ -68,12 +69,18 @@ class PriceManager implements PriceManagerInterface
     protected ItemIdentifierBuilderInterface $itemIdentifierBuilder;
 
     /**
+     * @var \Spryker\Zed\PriceCartConnector\Business\Filter\Comparator\ItemComparatorInterface
+     */
+    protected ItemComparatorInterface $itemComparator;
+
+    /**
      * @param \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceProductInterface $priceProductFacade
      * @param \Spryker\Zed\PriceCartConnector\Dependency\Facade\PriceCartToPriceInterface $priceFacade
      * @param \Spryker\Zed\PriceCartConnector\Business\Filter\PriceProductFilterInterface $priceProductFilter
      * @param \Spryker\Zed\PriceCartConnector\Dependency\Service\PriceCartConnectorToPriceProductServiceInterface $priceProductService
      * @param array<\Spryker\Zed\PriceCartConnectorExtension\Dependency\Plugin\PriceProductExpanderPluginInterface> $priceProductExpanderPlugins
      * @param \Spryker\Zed\PriceCartConnector\Business\Builder\ItemIdentifierBuilderInterface $itemIdentifierBuilder
+     * @param \Spryker\Zed\PriceCartConnector\Business\Filter\Comparator\ItemComparatorInterface $itemComparator
      */
     public function __construct(
         PriceCartToPriceProductInterface $priceProductFacade,
@@ -81,7 +88,8 @@ class PriceManager implements PriceManagerInterface
         PriceProductFilterInterface $priceProductFilter,
         PriceCartConnectorToPriceProductServiceInterface $priceProductService,
         array $priceProductExpanderPlugins,
-        ItemIdentifierBuilderInterface $itemIdentifierBuilder
+        ItemIdentifierBuilderInterface $itemIdentifierBuilder,
+        ItemComparatorInterface $itemComparator
     ) {
         $this->priceProductFacade = $priceProductFacade;
         $this->priceFacade = $priceFacade;
@@ -89,6 +97,7 @@ class PriceManager implements PriceManagerInterface
         $this->priceProductService = $priceProductService;
         $this->priceProductExpanderPlugins = $priceProductExpanderPlugins;
         $this->itemIdentifierBuilder = $itemIdentifierBuilder;
+        $this->itemComparator = $itemComparator;
     }
 
     /**
@@ -137,7 +146,167 @@ class PriceManager implements PriceManagerInterface
             $itemTransfer = $this->applyOriginUnitPrices($itemTransfer);
         }
 
+        $this->addPriceToAffectedQuoteItems($cartChangeTransfer, $cartChangeTransfer->getQuoteOrFail()->getPriceModeOrFail());
+
         return $cartChangeTransfer;
+    }
+
+    /**
+     * The price of a cart item can depend on the total quantity of the same item in the quote (e.g. volume prices).
+     * Therefore the quote items which are not part of the current cart change, but share the price relevant data
+     * with one of the changed items, have to be re-priced as well.
+     */
+    protected function addPriceToAffectedQuoteItems(CartChangeTransfer $cartChangeTransfer, string $priceMode): void
+    {
+        $affectedItemTransfers = $this->getAffectedQuoteItems($cartChangeTransfer);
+
+        if (!$affectedItemTransfers) {
+            return;
+        }
+
+        $priceProductFilterTransfers = $this->createPriceProductFilterTransfersForItems($cartChangeTransfer, $affectedItemTransfers);
+        $priceProductTransfers = $this->priceProductFacade->getValidPrices($priceProductFilterTransfers);
+        $priceProductTransfers = $this->executePriceProductExpanderPlugins($priceProductTransfers, $cartChangeTransfer);
+
+        $this->applyPricesToAffectedQuoteItems(
+            $affectedItemTransfers,
+            $priceProductFilterTransfers,
+            $priceProductTransfers,
+            $priceMode,
+        );
+    }
+
+    /**
+     * @param list<\Generated\Shared\Transfer\ItemTransfer> $itemTransfers
+     *
+     * @return array<string, \Generated\Shared\Transfer\PriceProductFilterTransfer>
+     */
+    protected function createPriceProductFilterTransfersForItems(CartChangeTransfer $cartChangeTransfer, array $itemTransfers): array
+    {
+        $priceProductFilterTransfers = [];
+        foreach ($itemTransfers as $key => $itemTransfer) {
+            $itemIdentifier = $this->getItemIdentifier($itemTransfer, (string)$key);
+
+            if (isset($priceProductFilterTransfers[$itemIdentifier])) {
+                continue;
+            }
+
+            $priceProductFilterTransfers[$itemIdentifier] = $this->priceProductFilter
+                ->createPriceProductFilterTransfer($cartChangeTransfer, $itemTransfer)
+                ->setIdentifier($itemIdentifier);
+        }
+
+        return $priceProductFilterTransfers;
+    }
+
+    /**
+     * @param list<\Generated\Shared\Transfer\ItemTransfer> $itemTransfers
+     * @param array<string, \Generated\Shared\Transfer\PriceProductFilterTransfer> $priceProductFilterTransfers
+     * @param array<\Generated\Shared\Transfer\PriceProductTransfer> $priceProductTransfers
+     */
+    protected function applyPricesToAffectedQuoteItems(
+        array $itemTransfers,
+        array $priceProductFilterTransfers,
+        array $priceProductTransfers,
+        string $priceMode
+    ): void {
+        $resolvedPriceProductTransfers = [];
+        foreach ($itemTransfers as $key => $itemTransfer) {
+            $itemIdentifier = $this->getItemIdentifier($itemTransfer, (string)$key);
+
+            if (!array_key_exists($itemIdentifier, $resolvedPriceProductTransfers)) {
+                $resolvedPriceProductTransfers[$itemIdentifier] = $this->priceProductService->resolveProductPriceByPriceProductFilter(
+                    $priceProductTransfers,
+                    $priceProductFilterTransfers[$itemIdentifier],
+                );
+            }
+
+            $this->applyPriceToAffectedQuoteItem($itemTransfer, $resolvedPriceProductTransfers[$itemIdentifier], $priceMode);
+        }
+    }
+
+    protected function applyPriceToAffectedQuoteItem(
+        ItemTransfer $itemTransfer,
+        ?PriceProductTransfer $priceProductTransfer,
+        string $priceMode
+    ): void {
+        if (!$priceProductTransfer || !$this->hasPriceProductAmount($priceProductTransfer, $priceMode)) {
+            return;
+        }
+
+        $itemTransfer = $this->setOriginUnitPrices($itemTransfer, $priceProductTransfer, $priceMode);
+
+        if ($this->hasForcedUnitGrossPrice($itemTransfer) || $this->hasSourceUnitPrices($itemTransfer)) {
+            return;
+        }
+
+        $this->applyOriginUnitPrices($itemTransfer);
+    }
+
+    /**
+     * @return list<\Generated\Shared\Transfer\ItemTransfer>
+     */
+    protected function getAffectedQuoteItems(CartChangeTransfer $cartChangeTransfer): array
+    {
+        $affectedItemTransfers = [];
+        foreach ($cartChangeTransfer->getQuoteOrFail()->getItems() as $quoteItemTransfer) {
+            if ($this->isQuoteItemUpdatedByCartChange($quoteItemTransfer, $cartChangeTransfer)) {
+                continue;
+            }
+
+            if (!$this->isQuoteItemAffectedByCartChange($quoteItemTransfer, $cartChangeTransfer)) {
+                continue;
+            }
+
+            $affectedItemTransfers[] = $quoteItemTransfer;
+        }
+
+        return $affectedItemTransfers;
+    }
+
+    /**
+     * The quote item is either the changed item itself or gets updated with its data by the cart storage provider,
+     * so it does not need to be re-priced.
+     */
+    protected function isQuoteItemUpdatedByCartChange(ItemTransfer $quoteItemTransfer, CartChangeTransfer $cartChangeTransfer): bool
+    {
+        foreach ($cartChangeTransfer->getItems() as $changedItemTransfer) {
+            if ($quoteItemTransfer === $changedItemTransfer) {
+                return true;
+            }
+
+            if ($quoteItemTransfer->getGroupKey() !== null && $quoteItemTransfer->getGroupKey() === $changedItemTransfer->getGroupKey()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function isQuoteItemAffectedByCartChange(ItemTransfer $quoteItemTransfer, CartChangeTransfer $cartChangeTransfer): bool
+    {
+        foreach ($cartChangeTransfer->getItems() as $changedItemTransfer) {
+            if ($this->itemComparator->isSameItem($quoteItemTransfer, $changedItemTransfer)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function hasPriceProductAmount(PriceProductTransfer $priceProductTransfer, string $priceMode): bool
+    {
+        $moneyValueTransfer = $priceProductTransfer->getMoneyValue();
+
+        if (!$moneyValueTransfer) {
+            return false;
+        }
+
+        if ($priceMode === $this->getNetPriceModeIdentifier()) {
+            return $moneyValueTransfer->getNetAmount() !== null;
+        }
+
+        return $moneyValueTransfer->getGrossAmount() !== null;
     }
 
     /**
