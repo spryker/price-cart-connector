@@ -354,25 +354,20 @@ class PriceCartConnectorFacadeTest extends Unit
     {
         $priceProductConcreteReaderReflection = new ReflectionClass("\Spryker\Zed\PriceProduct\Business\Model\Product\PriceProductConcreteReader");
         $property = $priceProductConcreteReaderReflection->getProperty('priceCache');
-        $property->setAccessible(true);
         $property->setValue(null, []);
 
         $readerReflection = new ReflectionClass("\Spryker\Zed\PriceProduct\Business\Model\Reader");
         $property = $readerReflection->getProperty('validPricesCache');
-        $property->setAccessible(true);
         $property->setValue(null, []);
 
         $property = $readerReflection->getProperty('resolvedPriceProductTransferCollection');
-        $property->setAccessible(true);
         $property->setValue(null, []);
 
         $productBundleCartExpanderReflection = new ReflectionClass("Spryker\Zed\ProductBundle\Business\ProductBundle\Cart\ProductBundleCartExpander");
         $property = $productBundleCartExpanderReflection->getProperty('productConcreteCache');
-        $property->setAccessible(true);
         $property->setValue(null, []);
 
         $property = $productBundleCartExpanderReflection->getProperty('productPriceCache');
-        $property->setAccessible(true);
         $property->setValue(null, []);
     }
 }
