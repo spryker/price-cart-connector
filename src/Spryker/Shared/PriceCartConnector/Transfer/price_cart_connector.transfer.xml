@@ -17,6 +17,7 @@
         <property name="quantity" type="int"/>
         <property name="sumNetPrice" type="int"/>
         <property name="unitNetPrice" type="int"/>
+        <property name="groupKey" type="string"/>
     </transfer>
 
     <transfer name="Quote">
